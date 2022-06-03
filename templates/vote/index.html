@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block con %}
+    
+    <div class="container mt-5 mb-5">
+        <h1><b>투표소</b></h1>
+
+        <div class="text-end">
+            <a href="{% url 'vote:create' %}" class="btn btn-lg btn-dark">토픽생성</a>
+        </div>
+
+
+        <div class="row">
+            {% for i in tset %}
+                <div class="col-lg-4 mt-5">
+                    <div class="card">
+                        <img src="{{ i.maker.getpic }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><b>{{ i.subject }}</b></h5>
+                            <p class="card-text">{{ i.summary }}</p>
+                            <div class="text-center">
+                                {% if user in i.voter.all %}
+                                    <a href="{% url 'vote:detail' i.id %}" class="btn btn-outline-dark btn-lg">결과보기</a>
+                                {% else %}
+                                    <a href="{% url 'vote:detail' i.id %}" class="btn btn-dark btn-lg">투표하기</a>
+                                {% endif %}
+                                {% if user == i.maker %}
+                                    <button type="button" class="btn btn-outline-danger btn-lg" data-bs-toggle="modal" data-bs-target="#test{{forloop.counter}}">
+                                        삭제하기
+                                    </button>
+                                {% endif %}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+
+
+    {% for i in tset %}
+        {% if i.maker == user %}
+            <div class="modal fade" id="test{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel"><b>토픽 삭제 알림</b></h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mt-5 mb-5">
+                                <h4><b>『{{ i.subject }}』</b> 는 {{ i.voter.count }} 명이 참여한 투표입니다. 그래도 삭제하시겠습니까?</h4>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                            <a class="btn btn-danger" href="{% url 'vote:delete' i.id %}">삭제</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+
+
+
+{% endblock %}

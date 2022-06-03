@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block noauth %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">김치찌개 좋아하시는 분 ~~ </h1>
+            <p class="col-md-8 fs-4">환영합니다~~ </p>
+            <a href=""><button class="btn btn-dark btn-lg" type="button" style="font-weight: bold;">CLICK</button></a>
+        </div>
+    </div>
+{% endblock %}
+{% block con %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">된장찌개 좋아하시는 분은 뒤로가기 살포시~ </h1>
+            <p class="col-md-8 fs-4">WELCOME 💎{{user}}💎</p>
+            <a href=""><button class="btn btn-dark btn-lg" type="button" style="font-weight: bold;">CLICK</button></a>
+        </div>
+    </div>
+{% endblock %}

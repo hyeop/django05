@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MY FIRST DJANGO PROJECT</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+
+        <!-- 인증된사용자라면 -->
+        {% if user.is_authenticated %}
+            <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(0, 0, 0); font-weight: bold; font-size: 25px;">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'acc:index' %}">HOME</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'board:index' %}">BOARD</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'vote:index' %}">VOTE</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'trans:index' %}">TRANS</a>
+                            </li>
+                            
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ user }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'book:index' %}">BOOKMARK</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'acc:profile' %}">PROFILE</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'acc:logout' %}">LOGOUT</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        <!-- 익명의사용자라면 -->
+        {% else %}
+            <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(0, 0, 0); font-weight: bold; font-size: 25px;">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'acc:index' %}">HOME</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'acc:login' %}">LOGIN</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url 'acc:signup' %}">SIGNUP</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endif %}
+
+
+        {% for i in messages %}
+            <div class="alert {{i.tags}} alert-dismissible fade show" role="alert">
+                <strong>{{ i.tags | upper }}</strong> {{ i.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+
+
+        {% if user.is_authenticated %}
+            {% block con %}
+                <div class="container mt-5 mb-5 text-center">
+                    <h1><b>이미 인증된 사용자 입니다 🍖</b></h1>
+                    <div class="mt-5">
+                        <a class="btn btn-dark btn-lg" href="{% url 'board:index' %}">게시판</a>
+                        <a class="btn btn-dark btn-lg" href="{% url 'vote:index' %}">투표하기</a>
+                        <a class="btn btn-dark btn-lg" href="{% url 'trans:index' %}">번역기</a>
+                        <a class="btn btn-dark btn-lg" href="{% url 'book:index' %}">북마크</a>
+                    </div>
+                </div>
+            {% endblock %}
+        {% else %}
+            {% block noauth %}
+                <div class="container mt-5 mb-5 text-center">
+                    <h1><b>로그인이 필요한 페이지입니다 🍖</b></h1>
+                    <div class="mt-5">
+                        <a class="btn btn-dark btn-lg" href="{% url 'acc:login' %}">로그인</a>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+
+        
+
+        <style>
+            .alert{
+                font-size: larger;
+                color:white;
+                font-weight: bolder;
+            }
+            .error{
+                background-color: rgb(255, 0, 0);
+            }
+            .success {
+                background-color: rgb(0, 0, 255);
+            }
+            .warning{
+                background-color: yellow;
+            }
+            .info{
+                background-color: gray;
+            }
+        </style>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    </body>
+</html>
